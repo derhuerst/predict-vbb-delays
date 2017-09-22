@@ -23,6 +23,7 @@
 		"node": ">=6"
 	},
 	"dependencies": {
+		"async": "^2.5.0",
 		"brain.js": "^1.0.0-rc.3",
 		"floordate": "^3.0.0",
 		"german-states-bbox": "^0.2.0",
