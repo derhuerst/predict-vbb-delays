@@ -1,0 +1,35 @@
+{
+	"name": "predict-vbb-delays",
+	"description": "Predict delays of Berlin public transport vehicles.",
+	"version": "0.1.0",
+	"main": "index.js",
+	"files": [
+		"index.js"
+	],
+	"keywords": [
+		"vbb",
+		"berlin",
+		"public transport",
+		"transit",
+		"delays",
+		"realtime"
+	],
+	"author": "Jannis R <mail@jannisr.de>",
+	"homepage": "https://github.com/derhuerst/predict-vbb-delays",
+	"repository": "derhuerst/predict-vbb-delays",
+	"bugs": "https://github.com/derhuerst/predict-vbb-delays/issues",
+	"license": "ISC",
+	"engines": {
+		"node": ">=6"
+	},
+	"dependencies": {
+	},
+	"devDependencies": {
+		"tape": "^4.6.3",
+		"tap-min": "^1.2.1"
+	},
+	"scripts": {
+		"test": "node test.js | tap-min",
+		"prepublishOnly": "npm test"
+	}
+}
