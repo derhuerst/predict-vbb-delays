@@ -10,3 +10,5 @@ package-lock.json
 shrinkwrap.yaml
 
 network.json
+
+vbb-delays.ldb
