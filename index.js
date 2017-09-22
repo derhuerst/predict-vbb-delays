@@ -2,9 +2,10 @@
 
 const path = require('path')
 const level = require('level')
-const {NeuralNetwork} = require('brain.js')
-const floor = require('floordate')
+const pump = require('pump')
 const brandenburg = require('german-states-bbox').BB
+const through = require('through2')
+const {stringify} = require('ndjson')
 
 const depToFeatures = require('./lib/dep-to-features')
 const stations = require('./lib/stations')
@@ -12,29 +13,21 @@ const stations = require('./lib/stations')
 const db = level(path.join(__dirname, 'vbb-delays.ldb'), {
 	valueEncoding: 'json'
 })
-const network = new NeuralNetwork({
-	hiddenLayers: [(stations.length + 9) * 2 / 3]
-})
 
 const clampDelay = delay => Math.min(1, delay / 3600)
 
-const training = []
+pump(
+	db.createValueStream(),
+	through.obj((dep, _, cb) => {
+		if (!stations.includes(dep.station.id)) return cb()
 
-db.createValueStream()
-.on('error', console.error)
-.on('data', (dep) => {
-	if (!stations.includes(dep.station.id)) return
-
-	const input = depToFeatures(dep, stations)
-	const output = {
-		delay: (dep.station.id === "900000012151") ? 0 : clampDelay(dep.delay)
+		depToFeatures(dep, stations, cb)
+	}),
+	stringify(),
+	process.stdout,
+	(err) => {
+		if (!err) return
+		console.error(err)
+		process.exitCode = 1
 	}
-
-	training.push({input, output})
-	console.error(dep.station.id)
-})
-.once('end', () => {
-	const res = network.train(training)
-
-	process.stdout.write(JSON.stringify(network.toJSON()) + '\n')
-})
+)

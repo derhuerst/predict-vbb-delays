@@ -27,6 +27,8 @@
 		"floordate": "^3.0.0",
 		"german-states-bbox": "^0.2.0",
 		"level": "^1.7.0",
+		"ndjson": "^1.5.0",
+		"pump": "^1.0.2",
 		"through2": "^2.0.3"
 	},
 	"devDependencies": {
