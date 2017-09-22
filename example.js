@@ -33,3 +33,13 @@ const sample2 = depToFeatures({
 }, stations)
 console.log(sample2)
 console.log(transformResult(network.run(sample2)))
+
+const sample3 = depToFeatures({
+	station: {
+		id: '900000077106',
+		coordinates: {latitude: 52.473822, longitude: 13.455998}
+	},
+	when: '2017-09-22T13:20:30'
+}, stations)
+console.log(sample3)
+console.log(transformResult(network.run(sample3)))

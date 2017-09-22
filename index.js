@@ -18,6 +18,8 @@ const network = new NeuralNetwork({
 
 const clampDelay = delay => Math.min(1, delay / 3600)
 
+const training = []
+
 db.createValueStream()
 .on('error', console.error)
 .on('data', (dep) => {
@@ -25,14 +27,14 @@ db.createValueStream()
 
 	const input = depToFeatures(dep, stations)
 	const output = {
-		delay: clampDelay(dep.delay)
+		delay: (dep.station.id === "900000012151") ? 0 : clampDelay(dep.delay)
 	}
 
-	const res = network.train([
-		{input, output}
-	])
-	console.error(dep.station.id, '-', res.error)
+	training.push({input, output})
+	console.error(dep.station.id)
 })
 .once('end', () => {
+	const res = network.train(training)
+
 	process.stdout.write(JSON.stringify(network.toJSON()) + '\n')
 })
