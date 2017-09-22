@@ -34,7 +34,8 @@
 	},
 	"devDependencies": {
 		"tap-min": "^1.2.1",
-		"tape": "^4.6.3"
+		"tape": "^4.6.3",
+		"vbb-stations": "^5.5.0"
 	},
 	"scripts": {
 		"test": "node test.js | tap-min",

@@ -11,7 +11,7 @@ const showError = (err) => {
 }
 
 const network = new NeuralNetwork({
-	hiddenLayers: [(stations.length + 9) * 2 / 3]
+	hiddenLayers: [25] // todo: peek stream, count nr of keys
 })
 
 const training = []
