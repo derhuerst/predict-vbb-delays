@@ -6,40 +6,42 @@ const {NeuralNetwork} = require('brain.js')
 const floor = require('floordate')
 const brandenburg = require('german-states-bbox').BB
 
+const depToFeatures = require('./lib/dep-to-features')
+
 const db = level(path.join(__dirname, 'vbb-delays.ldb'), {
 	valueEncoding: 'json'
 })
-const network = new NeuralNetwork()
+const network = new NeuralNetwork({
+	hiddenLayers: [2]
+})
 
-const clampLat = lat => (lat - brandenburg[2]) / (brandenburg[0] - brandenburg[2])
-const clampLon = lon => (lon - brandenburg[1]) / (brandenburg[3] - brandenburg[1])
+const clampDelay = delay => Math.min(1, delay / 3600)
+
+const stations = [
+	// '900000009102', // leo
+	// '900000100513', // unter den linden
+	'900000012151', // willy-brandt-haus
+	// '900000110015', // stahlheimer/wisbyer
+	// '900000160004', // lichtenberch
+	// '900000049241' // zehle
+]
 
 db.createValueStream()
 .on('error', console.error)
 .on('data', (dep) => {
-	const w = new Date(dep.when)
-	const dayOfWeek = w.getDay()
+	if (!stations.includes(dep.station.id)) return
 
-	const input = [
-		clampLat(dep.station.coordinates.latitude),
-		clampLon(dep.station.coordinates.longitude),
-		// dep.line.productCode,
-		dayOfWeek === 0,
-		dayOfWeek === 1,
-		dayOfWeek === 2,
-		dayOfWeek === 3,
-		dayOfWeek === 4,
-		dayOfWeek === 5,
-		dayOfWeek === 6,
-		// Math.round((w - floor(w, 'day')) / 1000)
-	]
-
-	const output = [
-		dep.delay
-	]
+	const input = depToFeatures(dep)
+	console.error(input)
+	const output = {
+		delay: clampDelay(dep.delay)
+	}
 
 	const res = network.train([
 		{input, output}
 	])
-	console.error('-', res.error)
+	// console.error('-', res.error)
+})
+.once('end', () => {
+	process.stdout.write(JSON.stringify(network.toJSON()) + '\n')
 })
