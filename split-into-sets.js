@@ -17,7 +17,7 @@ const argv = process.argv.slice(2)
 
 if (argv[0] === '-h' || argv[0] === '--help') {
 	process.stdout.write(`
-node split-into-sets.js <training-file> <auditing-ratio> <auditing-file>`)
+node split-into-sets.js <training-file> <auditing-ratio> <auditing-file>\n`)
 }
 
 const trainingFile = argv[0]
