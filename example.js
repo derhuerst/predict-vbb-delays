@@ -18,7 +18,7 @@ const argv = process.argv.slice(2)
 
 if (argv[0] === '-h' || argv[0] === '--help') {
 	process.stdout.write(`
-node train.js <network-file>\n`)
+node example.js <network-file> <station> <when> <line>\n`)
 }
 
 let networkFile = argv[0]
@@ -38,16 +38,27 @@ const transformResult = (result) => {
 	return result
 }
 
-const runSample = (id, when) => {
+const runSample = (id, when, line) => {
 	const [station] = allStations(id)
 	if (!station) return
 
-	depToFeatures({station, when}, stations, db, (err, {input}) => {
+	depToFeatures({
+		station, when, line: {name: line}
+	}, stations, db, (err, {input}) => {
 		console.log(input)
 		console.log(transformResult(network.run(input)))
 	})
 }
 
-runSample('900000012151', '2017-09-22T09:20:30')
-// runSample('900000100513', '2017-09-22T13:20:30')
-// runSample('900000077106', '2017-09-22T13:20:30')
+const station = argv[1]
+if (!station) showError('Invalid or missing station param.')
+
+const when = argv[2]
+if (!when || Number.isNaN(+new Date(when))) {
+	showError('Invalid or missing when param.')
+}
+
+const line = argv[3]
+if (!line) showError('Invalid or missing line param.')
+
+runSample(station, when, line)
