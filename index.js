@@ -3,7 +3,6 @@
 const path = require('path')
 const level = require('level')
 const pump = require('pump')
-const brandenburg = require('german-states-bbox').BB
 const through = require('through2')
 const {stringify} = require('ndjson')
 
