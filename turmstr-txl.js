@@ -8,6 +8,7 @@ const through = require('through2')
 const {stringify} = require('ndjson')
 
 const time = require('./lib/time')
+const dayOfWeek = require('./lib/day-of-week')
 
 const showError = (err) => {
 	console.error(err)
@@ -41,7 +42,8 @@ pump(
 
 		cb(null, {
 			delay: dep.delay,
-			time: time(dep)
+			time: time(dep),
+			dayOfWeek: dayOfWeek(dep)
 		})
 	}),
 	stringify(),
