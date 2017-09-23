@@ -36,6 +36,7 @@ pump(
 	db.createValueStream(),
 	through.obj((dep, _, cb) => {
 		if (stationId !== dep.station.id) return cb()
+		if (!dep.line || dep.line.name.toLowerCase() !== line.toLowerCase()) return cb()
 		if (dep.delay === null) return cb()
 
 		cb(null, {
