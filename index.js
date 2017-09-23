@@ -21,7 +21,7 @@ pump(
 	through.obj((dep, _, cb) => {
 		if (!stations.includes(dep.station.id)) return cb()
 
-		depToFeatures(dep, stations, cb)
+		depToFeatures(dep, stations, db, cb)
 	}),
 	stringify(),
 	process.stdout,
