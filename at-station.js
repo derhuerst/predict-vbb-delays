@@ -26,9 +26,6 @@ if (!stationId) showError('Invalid or missing station param.')
 const [station] = allStations(stationId)
 if (!station) showError('Station does not exist.')
 
-const line = argv[1]
-if (!line) showError('Invalid or missing line param.')
-
 const db = level(path.join(__dirname, 'vbb-delays.ldb'), {
 	valueEncoding: 'json'
 })
@@ -36,14 +33,16 @@ const db = level(path.join(__dirname, 'vbb-delays.ldb'), {
 pump(
 	db.createValueStream(),
 	through.obj((dep, _, cb) => {
+		console.error(dep)
 		if (stationId !== dep.station.id) return cb()
-		if (!dep.line || dep.line.name.toLowerCase() !== line.toLowerCase()) return cb()
 		if (dep.delay === null) return cb()
 
 		cb(null, {
 			delay: dep.delay,
 			time: time(dep),
-			dayOfWeek: dayOfWeek(dep)
+			line: dep.line && dep.line.name || null,
+			dayOfWeek: dayOfWeek(dep),
+			product: dep.line && dep.line.product || null
 		})
 	}),
 	stringify(),
