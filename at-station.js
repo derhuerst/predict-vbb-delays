@@ -11,6 +11,7 @@ const {stringify} = require('ndjson')
 
 const pkg = require('./package.json')
 const time = require('./lib/time')
+const month = require('./lib/month')
 const dayOfWeek = require('./lib/day-of-week')
 
 const argv = mri(process.argv.slice(2), {
@@ -63,6 +64,7 @@ pump(
 		cb(null, {
 			delay: dep.delay,
 			time: time(dep),
+			month: month(dep),
 			line: dep.line && dep.line.name || null,
 			dayOfWeek: dayOfWeek(dep),
 			product: dep.line && dep.line.product || null
