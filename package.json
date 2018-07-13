@@ -3,8 +3,14 @@
 	"description": "Predict delays of Berlin public transport vehicles.",
 	"version": "0.1.0",
 	"main": "index.js",
+	"bin": {
+		"delays-at-station": "./at-station.js",
+		"split-delays-into-sets": "./split-into-sets.js"
+	},
 	"files": [
 		"index.js",
+		"at-station.js",
+		"split-into-sets.js",
 		"lib"
 	],
 	"keywords": [
