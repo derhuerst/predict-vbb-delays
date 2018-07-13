@@ -1,28 +1,47 @@
 #!/usr/bin/env node
 'use strict'
 
+const mri = require('mri')
 const {isatty} = require('tty')
 const path = require('path')
 const fs = require('fs')
 const lineStream = require('byline').createStream
 
+const pkg = require('./package.json')
+
+const argv = mri(process.argv.slice(2), {
+	boolean: [
+		'help', 'h',
+		'version', 'v'
+	]
+})
+
+if (argv.help || argv.h) {
+	process.stdout.write(`
+Usage:
+    split-delays-into-sets <training-file> <auditing-ratio> <auditing-file>
+Examples:
+    cat delays.ndjson | split-delays-into-sets training.ndjson .8 auditing.ndjson
+\n`)
+	process.exit(0)
+}
+
+if (argv.version || argv.v) {
+	process.stdout.write(`split-delays-into-sets v${pkg.version}\n`)
+	process.exit(0)
+}
+
 const showError = (err) => {
-	console.error(err)
+	if (process.env.NODE_ENV === 'dev') console.error(err)
+	else console.error(err.message || (err + ''))
 	process.exit(1)
 }
 
-const argv = process.argv.slice(2)
-
-if (argv[0] === '-h' || argv[0] === '--help') {
-	process.stdout.write(`
-node split-into-sets.js <training-file> <auditing-ratio> <auditing-file>\n`)
-}
-
-const trainingFile = argv[0]
+const trainingFile = argv._[0]
 if (!trainingFile) showError('invalid or missing training-file param')
-const ratio = parseFloat(argv[1])
+const ratio = parseFloat(argv._[1])
 if (Number.isNaN(ratio)) showError('invalid or missing auditing-ratio param')
-const auditingFile = argv[2]
+const auditingFile = argv._[2]
 if (!auditingFile) showError('invalid or missing auditing-file param')
 
 if (isatty(process.stdin.fd)) showError('stdin must be a pipe')
