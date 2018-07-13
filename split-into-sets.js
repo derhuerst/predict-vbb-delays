@@ -3,7 +3,6 @@
 
 const mri = require('mri')
 const {isatty} = require('tty')
-const path = require('path')
 const fs = require('fs')
 const lineStream = require('byline').createStream
 
@@ -51,9 +50,9 @@ const src = process.stdin
 .pipe(lineStream())
 .on('error', showError)
 
-const auditing = fs.createWriteStream(path.join(__dirname, auditingFile))
+const auditing = fs.createWriteStream(auditingFile)
 .on('error', showError)
-const training = fs.createWriteStream(path.join(__dirname, trainingFile))
+const training = fs.createWriteStream(trainingFile)
 .on('error', showError)
 
 src.on('data', (dep) => {
