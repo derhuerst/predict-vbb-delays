@@ -87,5 +87,6 @@ So, after quickly trying [a JS regression module](https://www.npmjs.com/package/
 ## goals for future development
 
 - Create models for every station/line pair in an automatic process, publish them somewhere.
-- Embed predictions into [the `vbb.transport.rest` API](https://github.com/derhuerst/vbb-rest/blob/master/docs/index.md).
+- Embed predictions into [the `2.vbb.transport.rest` API](https://github.com/derhuerst/vbb-rest/blob/2/docs/index.md).
 - Apply this prediction mechanism to other cities & regions.
+- See also [`public-transport/ideas#3`](https://github.com/public-transport/ideas/issues/3).
