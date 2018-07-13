@@ -26,11 +26,11 @@
 	"dependencies": {
 		"byline": "^5.0.0",
 		"floordate": "^3.0.0",
-		"level": "^1.7.0",
+		"level": "^4.0.0",
 		"ndjson": "^1.5.0",
-		"pump": "^1.0.2",
+		"pump": "^3.0.0",
 		"through2": "^2.0.3",
-		"vbb-stations": "^5.5.0"
+		"vbb-stations": "^6.5.0"
 	},
 	"devDependencies": {
 		"tap-min": "^1.2.1",
